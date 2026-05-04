@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     EMAILS_FROM_NAME: Optional[str] = None
     
     # Frontend
-    FRONTEND_HOST: str = "http://localhost:8000"
+    FRONTEND_HOST: str = "http://localhost:8080"
     
     model_config = SettingsConfigDict(
         env_file=".env",

@@ -29,7 +29,7 @@ A production-ready authentication system built with FastAPI, SQLAlchemy, and Pyd
    ```
 
 4. **API Documentation**:
-   - Visit `http://localhost:8000/docs` for the interactive Swagger UI.
+   - Visit `http://localhost:8081/docs` for the interactive Swagger UI.
 
 ## Project Structure
 - `app/core`: Configuration, security utilities, database setup, and mailer.
