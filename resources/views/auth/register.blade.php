@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Register - FastAPI Auth')
+@section('title', 'Create Account - FastAPI Auth')
 
 @section('content')
 <div class="max-w-md mx-auto mt-10">
@@ -12,15 +12,15 @@
             @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-400 mb-2">Full Name</label>
-                <input type="text" name="full_name" required class="w-full bg-[#151515] border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition" value="{{ old('full_name') }}">
+                <input type="text" name="full_name" required class="w-full bg-[#151515] border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition" placeholder="John Doe">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
-                <input type="email" name="email" required class="w-full bg-[#151515] border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition" value="{{ old('email') }}">
+                <input type="email" name="email" required class="w-full bg-[#151515] border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition" placeholder="name@company.com">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-400 mb-2">Password</label>
-                <input type="password" name="password" required class="w-full bg-[#151515] border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition">
+                <input type="password" name="password" required class="w-full bg-[#151515] border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition" placeholder="••••••••">
             </div>
             
             <button type="submit" class="w-full bg-white hover:bg-gray-200 text-black font-bold py-4 rounded-xl transition shadow-lg">
@@ -29,7 +29,7 @@
         </form>
         
         <p class="mt-8 text-center text-sm text-gray-500">
-            Already have an account? <a href="{{ route('login') }}" class="text-red-500 hover:underline">Login</a>
+            Already have an account? <a href="{{ route('login') }}" class="text-red-500 hover:underline">Sign In</a>
         </p>
     </div>
 </div>

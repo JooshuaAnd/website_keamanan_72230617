@@ -3,54 +3,70 @@
 @section('title', 'Dashboard - FastAPI Auth')
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
-    <div class="md:col-span-1">
-        <div class="glass p-8 rounded-3xl sticky top-10">
-            <div class="w-24 h-24 bg-gradient-to-tr from-red-600 to-orange-400 rounded-2xl mb-6 flex items-center justify-center text-4xl font-bold text-white shadow-xl shadow-red-900/20 mx-auto">
-                {{ substr($user['full_name'] ?? 'U', 0, 1) }}
-            </div>
-            <h2 class="text-2xl font-bold text-white text-center">{{ $user['full_name'] ?? 'User' }}</h2>
-            <p class="text-gray-500 text-center text-sm mb-8">{{ $user['email'] }}</p>
-            
-            <div class="space-y-2">
-                <div class="flex justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
-                    <span class="text-gray-400">Status</span>
-                    <span class="text-green-500 font-bold">Active</span>
+<div class="mt-10">
+    <div class="flex justify-between items-end mb-10">
+        <div>
+            <h1 class="text-4xl font-bold text-white mb-2">Welcome Back, <span class="text-red-500">{{ $user['full_name'] ?? $user['email'] }}</span></h1>
+            <p class="text-gray-400">Manage your account and profile settings.</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="glass p-8 rounded-3xl col-span-2">
+            <h3 class="text-xl font-bold text-white mb-6">Profile Information</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between border-b border-white/5 pb-4">
+                    <span class="text-gray-500">Full Name</span>
+                    <span class="text-white font-medium">{{ $user['full_name'] ?? 'N/A' }}</span>
                 </div>
-                <div class="flex justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
-                    <span class="text-gray-400">Role</span>
-                    <span class="text-{{ ($user['is_superuser'] ?? false) ? 'purple' : 'blue' }}-500 font-bold">
+                <div class="flex justify-between border-b border-white/5 pb-4">
+                    <span class="text-gray-500">Email Address</span>
+                    <span class="text-white font-medium">{{ $user['email'] }}</span>
+                </div>
+                <div class="flex justify-between border-b border-white/5 pb-4">
+                    <span class="text-gray-500">Status</span>
+                    <span class="bg-green-500/10 text-green-500 px-3 py-1 rounded-full text-xs font-bold uppercase">
+                        {{ $user['is_verified'] ? 'Verified' : 'Unverified' }}
+                    </span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Role</span>
+                    <span class="bg-{{ ($user['is_superuser'] ?? false) ? 'purple' : 'blue' }}-500/10 text-{{ ($user['is_superuser'] ?? false) ? 'purple' : 'blue' }}-500 px-3 py-1 rounded-full text-xs font-bold uppercase">
                         {{ ($user['is_superuser'] ?? false) ? 'Administrator' : 'Standard User' }}
                     </span>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="md:col-span-2 space-y-8">
-        <div class="glass p-10 rounded-3xl">
-            <h3 class="text-2xl font-bold text-white mb-6">Welcome back to your workspace</h3>
-            <p class="text-gray-400 leading-relaxed">
-                You have successfully authenticated through our FastAPI backend and are now being managed by this Laravel application.
-                This hybrid architecture gives you the speed of FastAPI with the robust ecosystem of Laravel.
-            </p>
-        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div class="bg-gradient-to-br from-blue-600/20 to-blue-900/40 p-8 rounded-3xl border border-blue-500/20">
-                <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                </div>
-                <h4 class="text-xl font-bold text-white mb-2">Performance</h4>
-                <p class="text-blue-200/60 text-sm">Lightning fast responses from our optimized API endpoints.</p>
+        <div class="glass p-8 rounded-3xl">
+            <h3 class="text-xl font-bold text-white mb-6">Account Summary</h3>
+            <div class="bg-red-600/10 border border-red-500/20 p-4 rounded-2xl mb-6">
+                <p class="text-sm text-red-500 font-medium mb-1">Security Level</p>
+                <p class="text-2xl font-bold text-white">High</p>
             </div>
-            <div class="bg-gradient-to-br from-red-600/20 to-red-900/40 p-8 rounded-3xl border border-red-500/20">
-                <div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center mb-6">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                </div>
-                <h4 class="text-xl font-bold text-white mb-2">Security</h4>
-                <p class="text-red-200/60 text-sm">Protected by industry-standard JWT and Argon2id hashing.</p>
+            
+            @if($user['is_superuser'] ?? false)
+            <div class="mb-4">
+                <a href="{{ route('admin') }}" class="block w-full bg-red-600 hover:bg-red-700 text-white text-center font-bold py-3 rounded-xl transition shadow-lg shadow-red-900/20">
+                    VIEW SYSTEM DATABASE
+                </a>
             </div>
+            @endif
+
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3 rounded-xl transition">
+                    Sign Out
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Raw Data Section -->
+    <div class="mt-8 glass p-8 rounded-3xl">
+        <h3 class="text-xl font-bold text-white mb-6">User Data (Raw JSON)</h3>
+        <div class="bg-black/50 p-6 rounded-2xl border border-white/10 font-mono text-xs text-green-400 overflow-x-auto whitespace-pre">
+            <pre>{{ json_encode($user, JSON_PRETTY_PRINT) }}</pre>
         </div>
     </div>
 </div>

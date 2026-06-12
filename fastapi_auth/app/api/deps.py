@@ -45,8 +45,35 @@ def get_current_user(
 def get_current_active_superuser(
     current_user: User = Depends(get_current_user),
 ) -> User:
-    if not current_user.is_superuser:
+    if not current_user.is_superuser and current_user.role != "admin":
         raise HTTPException(
-            status_code=400, detail="The user doesn't have enough privileges"
+            status_code=403, detail="Forbidden: Admin access required"
+        )
+    return current_user
+
+def get_current_admin(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=403, detail="Forbidden: Admin access required"
+        )
+    return current_user
+
+def get_current_dosen(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    if current_user.role not in ["admin", "dosen"]:
+        raise HTTPException(
+            status_code=403, detail="Forbidden: Dosen access required"
+        )
+    return current_user
+
+def get_current_peserta(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    if current_user.role not in ["admin", "dosen", "peserta"]:
+        raise HTTPException(
+            status_code=403, detail="Forbidden: Participant access required"
         )
     return current_user

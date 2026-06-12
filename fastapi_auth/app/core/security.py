@@ -1,10 +1,19 @@
 from datetime import datetime, timedelta, timezone
 from typing import Any, Union, Optional
 from jose import jwt
-from passlib.context import CryptContext
+import bcrypt
 from app.core.config import settings
 
-pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return bcrypt.checkpw(
+        plain_password.encode('utf-8'),
+        hashed_password.encode('utf-8')
+    )
+
+def get_password_hash(password: str) -> str:
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed.decode('utf-8')
 
 ALGORITHM = settings.ALGORITHM
 
@@ -33,12 +42,6 @@ def create_refresh_token(
     to_encode = {"exp": expire, "sub": str(subject), "type": "refresh"}
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
-
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
-
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
 
 def create_email_verification_token(email: str) -> str:
     expire = datetime.now(timezone.utc) + timedelta(hours=24)
